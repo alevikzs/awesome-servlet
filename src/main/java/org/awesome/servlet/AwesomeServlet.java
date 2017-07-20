@@ -12,7 +12,25 @@ public class AwesomeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
-        out.println("Awesome testing...");
+        out.println("Awesome get testing!");
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
+        out.println("Awesome post testing!");
+    }
+
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
+        out.println("Awesome put testing!");
+    }
+
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
+        out.println("Awesome delete testing!");
     }
 
 }
