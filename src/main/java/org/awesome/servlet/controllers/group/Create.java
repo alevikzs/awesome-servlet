@@ -1,5 +1,8 @@
 package org.awesome.servlet.controllers.group;
 
+import org.awesome.servlet.models.Group;
+import org.awesome.servlet.models.Person;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +20,14 @@ public class Create extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
+
+        try {
+            Group group = new Group(name, description);
+
+            group.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         PrintWriter out = response.getWriter();
         out.println("Name: " + name);
