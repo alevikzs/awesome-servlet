@@ -85,7 +85,7 @@ abstract public class Model implements Modelable {
         return this;
     }
 
-    public Model load(String id) throws Exception {
+    public Model load(Integer id) throws Exception {
         String sql = "SELECT * FROM " + this.getTable() + " WHERE id = " + id;
 
         ResultSet result = this.getStatement().executeQuery(sql);
