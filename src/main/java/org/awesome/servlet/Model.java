@@ -1,6 +1,7 @@
 package org.awesome.servlet;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 abstract public class Model implements Modelable {
@@ -84,11 +85,65 @@ abstract public class Model implements Modelable {
         return this;
     }
 
+    public Model load(String id) throws Exception {
+        String sql = "SELECT * FROM " + this.getTable() + " WHERE id = " + id;
+
+        ResultSet result = this.getStatement().executeQuery(sql);
+
+        while (result.next()) {
+            this.map(result, this);
+        }
+
+        if (this.getId() != 0) {
+            return this;
+        } else {
+            return null;
+        }
+    }
+
+    public Models findAll() throws Exception {
+        Models models = new Models();
+
+        String sql = "SELECT * FROM " + this.getTable() + " WHERE id = " + id;
+
+        ResultSet result = this.getStatement().executeQuery(sql);
+
+        while (result.next()) {
+            Model model = (Model) this.clone();
+
+            model = this.map(result, model);
+
+            models.add(model);
+        }
+
+        return models;
+    }
+
     private String getColumnValue(String column) throws Exception {
         Field field = this.getClass().getDeclaredField(column);
         field.setAccessible(true);
 
         return (String) field.get(this);
+    }
+
+    private void setColumnValue(String column, String value) throws Exception {
+        Field field = this.getClass().getDeclaredField(column);
+        field.setAccessible(true);
+
+        field.set(this, value);
+    }
+
+    private Model map(ResultSet result, Model model) throws Exception {
+        model.id = result.getInt("id");
+
+        for (int i = 0; i < model.getColumns().length; i++) {
+            String column = model.getColumns()[i];
+            String value = result.getString(column);
+
+            model.setColumnValue(column, value);
+        }
+
+        return model;
     }
 
 }
