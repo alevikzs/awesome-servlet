@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-abstract public class Model implements Modelable {
+abstract public class Model implements Modelable, Cloneable {
 
     private int id;
 
@@ -67,7 +67,9 @@ abstract public class Model implements Modelable {
 
             updates.append(column);
             updates.append(" = ");
+            updates.append("'");
             updates.append(this.getColumnValue(column));
+            updates.append("'");
         }
 
         String sql  = "UPDATE " + this.getTable() + " SET " + updates + " WHERE id = " + this.getId();
@@ -104,7 +106,7 @@ abstract public class Model implements Modelable {
     public Models findAll() throws Exception {
         Models models = new Models();
 
-        String sql = "SELECT * FROM " + this.getTable() + " WHERE id = " + id;
+        String sql = "SELECT * FROM " + this.getTable();
 
         ResultSet result = this.getStatement().executeQuery(sql);
 

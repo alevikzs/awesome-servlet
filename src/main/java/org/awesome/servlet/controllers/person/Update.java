@@ -9,21 +9,33 @@ import java.io.IOException;
 
 import org.awesome.servlet.models.Person;
 
-@WebServlet("/person/create")
-public class Create extends HttpServlet {
+@WebServlet("/person/update")
+public class Update extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/person/create.jsp").forward(request, response);
+        Integer id = Integer.parseInt(request.getParameter("id"));
+
+        try {
+            Person person = (Person) new Person().load(id);
+
+            request.setAttribute("person", person);
+
+            request.getRequestDispatcher("/WEB-INF/person/update.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
 
         try {
-            Person person = new Person(firstName, lastName);
+            Person group = (Person) new Person().load(id);
 
-            person.save();
+            group.setFirstName(firstName).setLastName(lastName).save();
 
             response.sendRedirect(request.getContextPath() + "/persons");
         } catch (Exception e) {

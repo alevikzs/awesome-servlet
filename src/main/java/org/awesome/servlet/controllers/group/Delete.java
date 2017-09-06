@@ -7,19 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import org.awesome.servlet.Models;
 import org.awesome.servlet.models.Group;
 
-@WebServlet("/groups")
-public class Index extends HttpServlet {
+@WebServlet("/group/delete")
+public class Delete extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+
         try {
-            Models groups = new Group().findAll();
+            Group group = (Group) new Group().load(id);
 
-            request.setAttribute("groups", groups);
+            group.delete();
 
-            request.getRequestDispatcher("/WEB-INF/group/index.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/groups");
         } catch (Exception e) {
             e.printStackTrace();
         }
