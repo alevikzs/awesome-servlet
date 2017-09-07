@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DbStatement {
 
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost/awesomeServlet";
     private static final String USER = "root";
     private static final String PASSWORD = "";
